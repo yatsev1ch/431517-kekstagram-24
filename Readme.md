@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Алексей Яцевич](https://up.htmlacademy.ru/javascript/24/user/431517).
-* Наставник: `Неизвестно`.
+* Наставник: [Елена Грицук](https://up.htmlacademy.ru/javascript/24/user/199079).
 
 ---
 
