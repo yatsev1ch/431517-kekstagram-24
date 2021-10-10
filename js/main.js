@@ -16,24 +16,33 @@ const descriptionWords = {
   backgroundObjects: ['заката', 'дороги', 'леса', 'безысходности', 'гор', 'лужайки', 'озера'],
 };
 
-let textForComments = 'Всё отлично! В целом всё неплохо. Но не всё. Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально. Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше. Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше. Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!';
+const sentences = [
+  'Всё отлично!',
+  'В целом всё неплохо.',
+  'Но не всё.',
+  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра.',
+  'В конце концов это просто непрофессионально.',
+  'В конце концов это просто непрофессионально.',
+  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
+  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
+  'Лица у людей на фотке перекошены, как будто их избивают.', 'Как можно было поймать такой неудачный момент?!'
+];
 
 const namesForComments = ['Иван', 'Татьяна', 'Виктор', 'Александра', 'Алексей','Виталий','Григорий', 'Елена','Светлана','Людмила','Сергей','Пётр','Николай','Виктория','Наталья','Максим', 'Галина','Роман','Мария'];
 
-textForComments = textForComments.replace(/\. |! /g, (substring) => {
-  switch (substring) {
-    case '. ':
-      return '.#';
-    case '! ':
-      return '!#';
-    default:
-      return substring;
-  }
-});
-
-const sentences = textForComments.split('#');
 
 let usedCommentsIds = [];
+
+const createMessageFrom = (arrayOfSentences, numberOfSentences) => {
+  const chosenSentences = [];
+  for (let it = 1; it <= numberOfSentences; it++) {
+    const sentenceIndex = getRandomNumberFrom(0, arrayOfSentences.length - 1);
+    const sentence = sentences[sentenceIndex];
+    chosenSentences.push(sentence);
+  }
+
+  return chosenSentences.join(' ');
+};
 
 const getUniqueId = (minValue, maxValue, usedIds) => {
   let id = getRandomNumberFrom(minValue, maxValue);
@@ -57,12 +66,7 @@ const getComments = (numberOfComments) => {
     const avatar = `img/avatar-${avatarNumber}.svg`;
 
     const numberOfSentences = getRandomNumberFrom(1, 2);
-    let message = '';
-    for (let it = 1; it <= numberOfSentences; it++) {
-      const sentenceIndex = getRandomNumberFrom(0, sentences.length - 1);
-      const sentence = sentences[sentenceIndex];
-      message += (it === 2) ? ` ${sentence}` : `${sentence}`;
-    }
+    const message = createMessageFrom(sentences, numberOfSentences);
 
     const nameIndex = getRandomNumberFrom(0, namesForComments.length - 1);
     const name = namesForComments[nameIndex];
@@ -118,4 +122,9 @@ const getPosts = (numberOfPosts) => {
   return posts;
 };
 
-getPosts(25);
+const postsArray = getPosts(25);
+console.table(postsArray);
+
+postsArray.forEach((post) => {
+  console.table(post.comments);
+});
