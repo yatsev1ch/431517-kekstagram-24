@@ -25,7 +25,7 @@ const sentences = [
   'В конце концов это просто непрофессионально.',
   'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-  'Лица у людей на фотке перекошены, как будто их избивают.', 'Как можно было поймать такой неудачный момент?!'
+  'Лица у людей на фотке перекошены, как будто их избивают.', 'Как можно было поймать такой неудачный момент?!',
 ];
 
 const namesForComments = ['Иван', 'Татьяна', 'Виктор', 'Александра', 'Алексей','Виталий','Григорий', 'Елена','Светлана','Людмила','Сергей','Пётр','Николай','Виктория','Наталья','Максим', 'Галина','Роман','Мария'];
@@ -34,15 +34,21 @@ const namesForComments = ['Иван', 'Татьяна', 'Виктор', 'Але�
 let usedCommentsIds = [];
 
 const createMessageFrom = (arrayOfSentences, numberOfSentences) => {
-  const chosenSentences = [];
-  for (let it = 1; it <= numberOfSentences; it++) {
+  const usedSentences = [];
+  for (let iterator = 1; iterator <= numberOfSentences; iterator++) {
     const sentenceIndex = getRandomNumberFrom(0, arrayOfSentences.length - 1);
     const sentence = sentences[sentenceIndex];
-    chosenSentences.push(sentence);
+    usedSentences.push(sentence);
   }
 
-  return chosenSentences.join(' ');
+  return usedSentences.join(' ');
 };
+
+const getRandomElementFrom = (array) => {
+  const index = getRandomNumberFrom(0, array.length - 1);
+  return array[index];
+};
+
 
 const getUniqueId = (minValue, maxValue, usedIds) => {
   let id = getRandomNumberFrom(minValue, maxValue);
@@ -94,12 +100,10 @@ const getPosts = (numberOfPosts) => {
     const urlId = getUniqueId(1, numberOfPosts, usedUrlIds);
     const url = `photos/${urlId}.jpg`;
 
-    const nounIndex = getRandomNumberFrom(0, descriptionWords.nouns.length - 1);
-    const noun = descriptionWords.nouns[nounIndex];
-    const propertyIndex = getRandomNumberFrom(0, descriptionWords.properties.length - 1);
-    const property = descriptionWords.properties[propertyIndex];
-    const backgroundIndex = getRandomNumberFrom(0, descriptionWords.backgroundObjects.length - 1);
-    const background = descriptionWords.backgroundObjects[backgroundIndex];
+
+    const noun = getRandomElementFrom(descriptionWords.nouns);
+    const property = getRandomElementFrom(descriptionWords.properties);
+    const background = getRandomElementFrom(descriptionWords.backgroundObjects);
     const description = `${property} ${noun} на фоне ${background}`;
 
     const likes = getRandomNumberFrom(15, 200);
