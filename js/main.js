@@ -1,3 +1,5 @@
 import {getPosts} from './data.js';
+import {generateThumbnailsFrom} from './thumbnails.js';
 
-getPosts(25);
+const posts = getPosts(25);
+generateThumbnailsFrom(posts);
