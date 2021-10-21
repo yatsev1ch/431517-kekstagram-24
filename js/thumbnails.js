@@ -1,3 +1,5 @@
+import {showPost} from './fullscreen.js';
+
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
 const createThumbnailFrom = (post) => {
@@ -18,9 +20,13 @@ const generateThumbnailsFrom = (posts) => {
   const thumbnailsContainer = document.querySelector('.pictures');
   posts.forEach((post) => {
     const thumbnail = createThumbnailFrom(post);
-    fragment.appendChild(thumbnail);
+    thumbnail.addEventListener('click', (evt) =>{
+      evt.preventDefault();
+      showPost(post);
+    });
+    fragment.append(thumbnail);
   });
-  thumbnailsContainer.appendChild(fragment);
+  thumbnailsContainer.append(fragment);
 };
 
 export {generateThumbnailsFrom};
