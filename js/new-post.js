@@ -4,7 +4,7 @@ import {checkStringLength} from './utils.js';
 
 const MAX_HASHTAG_LENGTH = 19;
 const MAX_HASHTAG_COUNT = 5;
-const MAX_COMMENT_LENGTH = 5;
+const MAX_COMMENT_LENGTH = 140;
 const HASHTAG_EXPRESSION = /^[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
 
 const container = document.querySelector('.img-upload__overlay');
