@@ -31,8 +31,6 @@ const onTextInputUnfocus = (evt) => {
 const onClose = () => {
   fileInput.value = '';
   previewImage.src = defaultImageSrc;
-  textContainer.removeEventListener('focusin', onTextInputFocus);
-  textContainer.removeEventListener('focusout', onTextInputUnfocus);
   commentInput.value = '';
   hashtagsInput.value = '';
   resetHashtagsCharCounter();
