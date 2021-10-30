@@ -87,7 +87,7 @@ const checkHastagsIn = (input) => {
   const inputString = input.value;
 
   let errorMessage = '';
-  let isInputError  = false;
+  // let isInputError  = false;
 
 
   let editingState;
@@ -113,12 +113,19 @@ const checkHastagsIn = (input) => {
 
   for (const errorString of [expressionErrorString, countErrorString, duplicateErrorString]) {
     if (errorString) {
-      isInputError = true;
+      editingState = 'error';
       errorMessage = errorString;
     }
   }
 
-  input.value = isInputError ? createInputValueFrom(tags) : createInputValueFrom(rawTags);
+  switch (editingState) {
+    case 'refreshing':
+    case 'error':
+      input.value = createInputValueFrom(tags);
+      break;
+    default:
+      rawTags.at(-1) === tags.at(-1) ? input.value = createInputValueFrom(tags) : input.value = createInputValueFrom(rawTags);
+  }
 
   input.setCustomValidity(errorMessage);
   input.reportValidity();
