@@ -9,6 +9,8 @@ const checkStringLength = (string, maxLength) => string.length <= maxLength;
 
 const checkStringForExpression = (string, expression) => expression.test(string);
 
+const replaceCharIn = (string, index, newChar) => string.substr(0, index) + newChar + string.substr(index + 1);
+
 
 const getRandomElementFrom = (array) => {
   const index = getRandomNumberFrom(0, array.length - 1);
@@ -60,5 +62,5 @@ const createMessageFrom = (arrayOfStrings, numberOfStrings) => {
   return usedStrings.join(' ');
 };
 
-export {getRandomNumberFrom, checkStringLength, getRandomElementFrom, getUniqueId, createMessageFrom, isEscape, checkStringForExpression, checkArrayForDuplicate, checkForActiveElementsIn};
+export {getRandomNumberFrom, checkStringLength, getRandomElementFrom, getUniqueId, createMessageFrom, isEscape, checkStringForExpression, checkArrayForDuplicate, checkForActiveElementsIn, replaceCharIn};
 
