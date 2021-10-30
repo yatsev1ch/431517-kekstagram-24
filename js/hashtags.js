@@ -1,142 +1,128 @@
-import {checkStringsForExpression, checkArrayForDuplicate} from './utils.js';
+import {checkArrayForDuplicate, checkStringForExpression} from './utils.js';
 import {MAX_HASHTAG_COUNT, MAX_HASHTAG_LENGTH, HASHTAG_EXPRESSION} from './new-post.js';
 
-let hashtagsCharCounter;
+let hashtagsCharCounter = 0;
 
-const checkInputValue = (input, currentString, errorString, isError) => {
-  const lastChar = currentString.slice(-1);
-  const twoLastChars = currentString.slice(-2);
+const createTagsFrom = (input, editingState) => {
+  const inputString = input.value;
+  const lastChar = inputString.slice(-1);
+  const twoLastChars = inputString.slice(-2);
 
-  const isDeleting = currentString.length < hashtagsCharCounter;
-  const isTyping = currentString.length > hashtagsCharCounter;
-  let message = '';
+  let typingErrorString;
 
-  if (isError) {
-    switch (true) {
-      case errorString.length > 1:
-        message = errorString;
-        break;
-      default:
-        message = `В хештеге нельзя использовать символ ${errorString}`;
-    }
-    input.value = currentString.slice(0, -1);
-    return message;
-  }
+  let stringToSplit = inputString.toLowerCase().replace(/\s/g, '');
 
-  if (lastChar === '#') {
-    switch (true) {
-      case twoLastChars === '##' && isTyping:
-        input.value = currentString.slice(0, -1);
-        message = 'Хештег не должен содержать символ #';
-        break;
-      case isTyping && currentString.length > 1:
-        input.value = currentString.slice(0, -1);
-        input.value += ' #';
-    }
-  }
-
-
-  if (lastChar === ' ') {
-    switch (true) {
-      case isDeleting:
-        input.value = currentString.slice(0, -1);
-        break;
-      case isTyping && !isError:
-        if (twoLastChars === '# ') {
-          input.value = currentString.slice(0, -1);
-          message = 'Хештег не должен содержать пробел';
-          break;
-        }
-        input.value += '#';
-    }
-  }
-
-  return message;
-
-};
-
-const createCurrentHashtagsFrom = (currentString) => {
-  let transformedString = currentString.toLowerCase().replace(/\s/g, '');
   switch (true) {
-    case transformedString.slice(-2) === '##':
-      transformedString = transformedString.slice(0, -2).trim();
+    case editingState === 'refreshing' && (lastChar === '#' || lastChar === ' '):
+      stringToSplit = stringToSplit.slice(0, -1).trim();
       break;
-    case transformedString.slice(-1) === '#':
-      transformedString = transformedString.slice(0, -1).trim();
+    case editingState === 'typing' && inputString.length === 1 && lastChar !== '#':
+      typingErrorString = 'Хештег должен начинаться с #';
+      break;
+    case editingState === 'typing' && twoLastChars === '# ':
+      typingErrorString = 'Хештег не может содержать пробел';
+      break;
+    case editingState === 'typing' && lastChar === ' ':
+      stringToSplit += '#';
+      break;
+    case editingState === 'typing' && twoLastChars === '##':
+      stringToSplit = stringToSplit.slice(0, -1);
+      typingErrorString = 'Хештег не может содержать #';
+      break;
   }
-  const currentHashtags = transformedString.split('#');
-  currentHashtags.shift();
-  return currentHashtags;
+  const rawTags = stringToSplit.split('#');
+  rawTags.shift();
+
+  const tags = rawTags.filter((tag) => tag !== '');
+
+  return {tags, rawTags, typingErrorString};
 };
 
-const getHashtagCountErrorString = (hashtagsArray, currentString) => {
-  const lastChar = currentString.slice(-1);
-  if (hashtagsArray.length >= MAX_HASHTAG_COUNT && (lastChar === ' ' || lastChar === '#')) {
+const getTagsCountErrorString = (rawTags, tags) => {
+  if (rawTags.length > MAX_HASHTAG_COUNT && tags.length === MAX_HASHTAG_COUNT) {
     return `Максимальное количество хештегов - ${MAX_HASHTAG_COUNT}`;
   }
   return '';
 };
 
-const getExpressionErrorString = (expressionCheckResult, maxLength) => {
-  if (expressionCheckResult === '') {
-    return expressionCheckResult;
-  }
-
-  if (expressionCheckResult.length <= maxLength) {
-    return expressionCheckResult.slice(-1);
-  }
-  return `Хештег не может быть длиннее ${maxLength + 1} символов`;
+const getExpressionErrorString = (tags) => {
+  let errorMessage = '';
+  tags.forEach((tag, tagIndex) => {
+    if (!checkStringForExpression(tag, HASHTAG_EXPRESSION)) {
+      if (tag.length >= MAX_HASHTAG_LENGTH) {
+        tags[tagIndex] = tag.slice(0, MAX_HASHTAG_LENGTH - 1);
+        errorMessage =  `Хештег не может содержать больше ${MAX_HASHTAG_LENGTH} символов`;
+      }
+      if (tag.length < MAX_HASHTAG_LENGTH) {
+        const lastChar = tag.slice(-1);
+        tags[tagIndex] = tag.slice(0, -1);
+        errorMessage = `Хештег не может содержать символ '${lastChar}'`;
+      }
+    }
+  });
+  return errorMessage;
 };
 
-const getFirstCharErrorString = (currentString) => {
-  const firstChar = currentString[0];
-  if (firstChar !== '#' && currentString.length === 1) {
-    return 'Хэштег должен начинаться с символа #';
-  }
-  return '';
-};
-
-const getDuplicateHashtagsErrorString = (hashtagsToCheck) => {
-  const hashtag = checkArrayForDuplicate(hashtagsToCheck);
-  if (hashtag) {
-    return `Хештег #${hashtag} уже существует`;
+const getDuplicateTagsErrorString = (tags) => {
+  const {element, innerIterator} = checkArrayForDuplicate(tags);
+  if (element) {
+    tags[innerIterator] = element.slice(0, -1);
+    return `Хештег #${element} уже существует`;
   }
   return '';
 };
 
 const resetHashtagsCharCounter = () => {
-  hashtagsCharCounter = undefined;
+  hashtagsCharCounter = 0;
+};
+
+const createInputValueFrom = (tags) => {
+  const hashtags = tags.map((tag) => `#${tag}`);
+  const valueString = hashtags.join(' ');
+  return valueString;
 };
 
 
 const checkHastagsIn = (input) => {
-  const currentString = input.value;
+  const inputString = input.value;
 
-  let isInputError = false;
-  let messageToShow = '';
+  let errorMessage = '';
+  let isInputError  = false;
 
-  const currentHashtags = createCurrentHashtagsFrom(currentString);
 
-  const expressionCheckResult = checkStringsForExpression(currentHashtags, HASHTAG_EXPRESSION);
-  const expressionErrorString = getExpressionErrorString(expressionCheckResult, MAX_HASHTAG_LENGTH);
+  let editingState;
+  switch (true) {
+    case inputString.length > hashtagsCharCounter:
+      editingState = 'typing';
+      break;
+    case inputString.length === hashtagsCharCounter:
+      editingState = 'refreshing';
+      break;
+  }
 
-  const countErrorString = getHashtagCountErrorString(currentHashtags, currentString);
-  const firstCharErrorString = getFirstCharErrorString(currentString);
-  const duplicateHashtagsErrorString = getDuplicateHashtagsErrorString(currentHashtags);
 
-  for (const errorString of [expressionErrorString, firstCharErrorString, duplicateHashtagsErrorString, countErrorString]) {
+  const {tags, rawTags, typingErrorString} = createTagsFrom(input, editingState);
+
+  const countErrorString = getTagsCountErrorString(rawTags, tags);
+  const expressionErrorString = getExpressionErrorString(tags);
+  const duplicateErrorString = getDuplicateTagsErrorString(tags);
+
+  if (typingErrorString) {
+    errorMessage = typingErrorString;
+  }
+
+  for (const errorString of [expressionErrorString, countErrorString, duplicateErrorString]) {
     if (errorString) {
       isInputError = true;
-      messageToShow = checkInputValue(input, currentString, errorString, isInputError);
+      errorMessage = errorString;
     }
   }
 
-  if (!isInputError) {
-    messageToShow = checkInputValue(input, currentString, messageToShow, isInputError);
-  }
+  input.value = isInputError ? createInputValueFrom(tags) : createInputValueFrom(rawTags);
 
-  input.setCustomValidity(messageToShow);
+  input.setCustomValidity(errorMessage);
   input.reportValidity();
+
   hashtagsCharCounter = input.value.length;
 };
 

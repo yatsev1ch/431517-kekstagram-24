@@ -1,8 +1,8 @@
-import {setupAndShowModal, setModalEscapeLockTo} from './modal.js';
+import {setupAndShowModal} from './modal.js';
 import {checkHastagsIn, resetHashtagsCharCounter} from './hashtags.js';
 import {checkStringLength} from './utils.js';
 
-const MAX_HASHTAG_LENGTH = 19;
+const MAX_HASHTAG_LENGTH = 20;
 const MAX_HASHTAG_COUNT = 5;
 const MAX_COMMENT_LENGTH = 140;
 const HASHTAG_EXPRESSION = /^[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
@@ -17,17 +17,6 @@ const textContainer = container.querySelector('.img-upload__text');
 
 const defaultImageSrc = previewImage.src;
 
-const onTextInputFocus = () => {
-  setModalEscapeLockTo(true);
-};
-
-const onTextInputUnfocus = (evt) => {
-  setModalEscapeLockTo(false);
-  const input = evt.target;
-  const emptyEvent = new Event('input');
-  input.dispatchEvent(emptyEvent);
-};
-
 const onClose = () => {
   fileInput.value = '';
   previewImage.src = defaultImageSrc;
@@ -36,7 +25,23 @@ const onClose = () => {
   resetHashtagsCharCounter();
 };
 
-const onCommentInput = () => {
+fileInput.addEventListener('change', () => {
+  setupAndShowModal(container, closeButton, onClose, hashtagsInput, commentInput);
+  const file = fileInput.files[0];
+  previewImage.src = URL.createObjectURL(file);
+});
+
+textContainer.addEventListener('focusout', (evt) => {
+  const input = evt.target;
+  const emptyEvent = new Event('input');
+  input.dispatchEvent(emptyEvent);
+});
+
+hashtagsInput.addEventListener('input', () => {
+  checkHastagsIn(hashtagsInput);
+});
+
+commentInput.addEventListener('input', () => {
   const isCorrectLength = checkStringLength(commentInput.value, MAX_COMMENT_LENGTH);
   let messageToShow = '';
   if (!isCorrectLength) {
@@ -45,21 +50,6 @@ const onCommentInput = () => {
   }
   commentInput.setCustomValidity(messageToShow);
   commentInput.reportValidity();
-};
-
-fileInput.addEventListener('change', () => {
-  setupAndShowModal(container, closeButton, onClose);
-  const file = fileInput.files[0];
-  previewImage.src = URL.createObjectURL(file);
 });
-
-textContainer.addEventListener('focusin', onTextInputFocus);
-textContainer.addEventListener('focusout', onTextInputUnfocus);
-
-hashtagsInput.addEventListener('input', () => {
-  checkHastagsIn(hashtagsInput);
-});
-
-commentInput.addEventListener('input', onCommentInput);
 
 export {MAX_HASHTAG_LENGTH, MAX_HASHTAG_COUNT, HASHTAG_EXPRESSION};

@@ -1,4 +1,4 @@
-import {isEscape} from './utils.js';
+import {isEscape, checkForActiveElementsIn} from './utils.js';
 
 let modal;
 let closeButton;
@@ -8,17 +8,10 @@ let onModalClose;
 
 let onCloseCompletion;
 
-let isLockedForEscape = false;
-
-const setModalEscapeLockTo = (value) => {
-  isLockedForEscape = value;
-};
-
 const resetModal = () => {
   modal = undefined;
   closeButton = undefined;
   onCloseCompletion = undefined;
-  isLockedForEscape = false;
   onModalEscape = undefined;
   onModalClose = undefined;
 };
@@ -26,14 +19,8 @@ const resetModal = () => {
 const closeAndResetModal = () => {
   modal.classList.add('hidden');
   document.body.classList.remove('modal-open');
-
-  if (onModalEscape) {
-    document.removeEventListener('keydown', onModalEscape);
-  }
-
-  if (onModalClose) {
-    closeButton.removeEventListener('click', onModalClose);
-  }
+  document.removeEventListener('keydown', onModalEscape);
+  closeButton.removeEventListener('click', onModalClose);
 
   if (onCloseCompletion) {
     onCloseCompletion();
@@ -42,7 +29,7 @@ const closeAndResetModal = () => {
   resetModal();
 };
 
-const showModal = () => {
+const showModal = (inputsWithFocus) => {
   modal.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
@@ -52,22 +39,25 @@ const showModal = () => {
   closeButton.addEventListener('click', onModalClose);
 
   onModalEscape = (evt) => {
-    if (isEscape(evt) && !isLockedForEscape) {
+    if (isEscape(evt)) {
       evt.preventDefault();
+      if (checkForActiveElementsIn(inputsWithFocus)) {
+        return;
+      }
       closeAndResetModal();
     }
   };
   document.addEventListener('keydown', onModalEscape);
 };
 
-const setupAndShowModal = (modalElement, button, closeCompletionHandler) => {
+const setupAndShowModal = (modalElement, button, closeCompletionHandler, ...inputsWithFocus) => {
   modal = modalElement;
   closeButton = button;
-  showModal();
+  showModal(inputsWithFocus);
 
   if (closeCompletionHandler) {
     onCloseCompletion = closeCompletionHandler;
   }
 };
 
-export {setupAndShowModal, setModalEscapeLockTo};
+export {setupAndShowModal};

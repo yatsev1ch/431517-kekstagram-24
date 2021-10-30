@@ -9,25 +9,27 @@ const checkStringLength = (string, maxLength) => string.length <= maxLength;
 
 const checkStringForExpression = (string, expression) => expression.test(string);
 
-const checkStringsForExpression = (strings, expression) => {
-  for (const string of strings) {
-    if (!checkStringForExpression(string, expression)) {
-      return string;
-    }
-  }
-  return '';
-};
 
 const getRandomElementFrom = (array) => {
   const index = getRandomNumberFrom(0, array.length - 1);
   return array[index];
 };
 
+const checkForActiveElementsIn = (elements) => {
+  for (const element of elements) {
+    if (document.activeElement === element) {
+      return true;
+    }
+  }
+  return false;
+};
+
 const checkArrayForDuplicate = (array) => {
   for (let globalIterator = 0; globalIterator <= array.length - 2; globalIterator++) {
     for (let innerIterator = globalIterator + 1; innerIterator <= array.length - 1; innerIterator++){
       if (array[globalIterator] === array[innerIterator]){
-        return array[innerIterator];
+        const element = array[innerIterator];
+        return {element, innerIterator};
       }
     }
   }
@@ -58,4 +60,5 @@ const createMessageFrom = (arrayOfStrings, numberOfStrings) => {
   return usedStrings.join(' ');
 };
 
-export {getRandomNumberFrom, checkStringLength, getRandomElementFrom, getUniqueId, createMessageFrom, isEscape, checkStringsForExpression, checkArrayForDuplicate};
+export {getRandomNumberFrom, checkStringLength, getRandomElementFrom, getUniqueId, createMessageFrom, isEscape, checkStringForExpression, checkArrayForDuplicate, checkForActiveElementsIn};
+
