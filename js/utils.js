@@ -11,6 +11,11 @@ const checkStringForExpression = (string, expression) => expression.test(string)
 
 const replaceCharIn = (string, index, newChar) => string.substr(0, index) + newChar + string.substr(index + 1);
 
+const getLastElementIn = (array) => {
+  const index = array.length - 1;
+  return array[index];
+};
+
 
 const getRandomElementFrom = (array) => {
   const index = getRandomNumberFrom(0, array.length - 1);
@@ -31,7 +36,7 @@ const checkArrayForDuplicate = (array) => {
     for (let innerIterator = globalIterator + 1; innerIterator <= array.length - 1; innerIterator++){
       if (array[globalIterator] === array[innerIterator]){
         const element = array[innerIterator];
-        return {element, innerIterator};
+        return element;
       }
     }
   }
@@ -62,5 +67,5 @@ const createMessageFrom = (arrayOfStrings, numberOfStrings) => {
   return usedStrings.join(' ');
 };
 
-export {getRandomNumberFrom, checkStringLength, getRandomElementFrom, getUniqueId, createMessageFrom, isEscape, checkStringForExpression, checkArrayForDuplicate, checkForActiveElementsIn, replaceCharIn};
+export {getRandomNumberFrom, checkStringLength, getRandomElementFrom, getUniqueId, createMessageFrom, isEscape, checkStringForExpression, checkArrayForDuplicate, checkForActiveElementsIn, replaceCharIn, getLastElementIn};
 

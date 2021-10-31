@@ -1,4 +1,4 @@
-import {checkArrayForDuplicate, checkStringForExpression, replaceCharIn} from './utils.js';
+import {checkArrayForDuplicate, checkStringForExpression, replaceCharIn, getLastElementIn} from './utils.js';
 import {MAX_HASHTAG_COUNT, MAX_HASHTAG_LENGTH, HASHTAG_EXPRESSION} from './new-post.js';
 
 let hashtagsCharCounter = 0;
@@ -47,32 +47,28 @@ const getTagsCountErrorString = (rawTags, tags) => {
 
 const getExpressionErrorString = (tags) => {
   let errorMessage = '';
-  for (let tagIterator = 0; tagIterator < tags.length; tagIterator++) {
-    const tag = tags[tagIterator];
+  tags.forEach((tag) => {
     if (!checkStringForExpression(tag, HASHTAG_EXPRESSION)) {
       if (tag.length < MAX_HASHTAG_LENGTH) {
         for (let charIterator = 0; charIterator < tag.length; charIterator++ ) {
           const char = tag[charIterator];
           if (!HASHTAG_EXPRESSION.test(char)) {
-            tags[tagIterator] = replaceCharIn(tag, charIterator, '');
-            errorMessage = `Хештег не может содержать символ '${char}'`;
+            errorMessage = `Хештег "${tag}" содержит недопустимый символ '${char}'`;
           }
         }
       }
       if (tag.length >= MAX_HASHTAG_LENGTH) {
-        tags[tagIterator] = tag.slice(0, MAX_HASHTAG_LENGTH - 1);
-        errorMessage =  `Хештег не может содержать больше ${MAX_HASHTAG_LENGTH} символов`;
+        errorMessage =  `Хештег "${tag}" слишком длинный. Хештег не может содержать больше ${MAX_HASHTAG_LENGTH} символов`;
       }
     }
-  }
+  });
   return errorMessage;
 };
 
 const getDuplicateTagsErrorString = (tags) => {
-  const {element, innerIterator} = checkArrayForDuplicate(tags);
-  if (element) {
-    tags[innerIterator] = element.slice(0, -1);
-    return `Хештег #${element} уже существует`;
+  const tag = checkArrayForDuplicate(tags);
+  if (tag) {
+    return `Хештег #${tag} уже существует`;
   }
   return '';
 };
@@ -127,7 +123,10 @@ const checkHastagsIn = (input) => {
       input.value = createInputValueFrom(tags);
       break;
     default:
-      rawTags.at(-1) === tags.at(-1) ? input.value = createInputValueFrom(tags) : input.value = createInputValueFrom(rawTags);
+      if (getLastElementIn(rawTags) === '') {
+        tags.push('');
+      }
+      input.value = createInputValueFrom(tags);
   }
 
   input.setCustomValidity(errorMessage);
