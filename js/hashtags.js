@@ -1,4 +1,4 @@
-import {checkArrayForDuplicate, checkStringForExpression, replaceCharIn, getLastElementIn} from './utils.js';
+import {checkArrayForDuplicate, checkStringForExpression, getLastElementIn} from './utils.js';
 import {MAX_HASHTAG_COUNT, MAX_HASHTAG_LENGTH, HASHTAG_EXPRESSION} from './new-post.js';
 
 let hashtagsCharCounter = 0;
