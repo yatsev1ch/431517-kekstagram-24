@@ -1,6 +1,8 @@
-import {checkArrayForDuplicate, checkStringForExpression, getLastElementIn} from './utils.js';
+import {checkArrayForDuplicate, checkStringForExpression, getLastElementIn, clearStringFromExpression} from './utils.js';
 import {MAX_HASHTAG_COUNT, MAX_HASHTAG_LENGTH, HASHTAG_EXPRESSION} from './new-post.js';
 
+const INNER_SHARP_EXPRESSION = /^[A-Za-zА-Яа-яЁё0-9]{1}#[A-Za-zА-Яа-яЁё0-9]{1}$/;
+const INNER_SPACE_EXPRESSION = /^[A-Za-zА-Яа-яЁё0-9]{1} [A-Za-zА-Яа-яЁё0-9]{1}$/;
 let hashtagsCharCounter = 0;
 
 const createTagsFrom = (input, editingState) => {
@@ -11,13 +13,23 @@ const createTagsFrom = (input, editingState) => {
   let typingErrorString;
 
   let stringToSplit = inputString.toLowerCase().replace(/\s/g, '');
+  const stringWithoutInnerSharp = clearStringFromExpression(inputString, INNER_SHARP_EXPRESSION);
+  const stringWithoutInnerSpace = clearStringFromExpression(inputString, INNER_SPACE_EXPRESSION);
 
   switch (true) {
     case editingState === 'refreshing' && (lastChar === '#' || lastChar === ' '):
       stringToSplit = stringToSplit.slice(0, -1).trim();
       break;
+    case stringWithoutInnerSharp !== undefined:
+      stringToSplit = stringWithoutInnerSharp.slice().toLowerCase().replace(/\s/g, '');
+      typingErrorString = 'Хештег не может содержать символ "#"';
+      break;
+    case stringWithoutInnerSpace !== undefined:
+      stringToSplit = stringWithoutInnerSpace.slice().toLowerCase().replace(/\s/g, '');
+      typingErrorString = 'Хештег не может содержать пробел';
+      break;
     case editingState === 'typing' && inputString.length === 1 && lastChar !== '#':
-      typingErrorString = 'Хештег должен начинаться с #';
+      typingErrorString = 'Хештег должен начинаться с символа "#"';
       break;
     case editingState === 'typing' && twoLastChars === '# ':
       typingErrorString = 'Хештег не может содержать пробел';
@@ -27,7 +39,7 @@ const createTagsFrom = (input, editingState) => {
       break;
     case editingState === 'typing' && twoLastChars === '##':
       stringToSplit = stringToSplit.slice(0, -1);
-      typingErrorString = 'Хештег не может содержать #';
+      typingErrorString = 'Хештег не может содержать символ "#"';
       break;
   }
   const rawTags = stringToSplit.split('#');
@@ -39,7 +51,7 @@ const createTagsFrom = (input, editingState) => {
 };
 
 const getTagsCountErrorString = (rawTags, tags) => {
-  if (rawTags.length > MAX_HASHTAG_COUNT && tags.length === MAX_HASHTAG_COUNT) {
+  if (rawTags.length > MAX_HASHTAG_COUNT && tags.length >= MAX_HASHTAG_COUNT) {
     return `Максимальное количество хештегов - ${MAX_HASHTAG_COUNT}`;
   }
   return '';
