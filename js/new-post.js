@@ -1,10 +1,8 @@
 import {setupAndShowModal} from './modal.js';
 import {checkHashtagsIn, resetHashtagsCharCounter} from './hashtags.js';
-import {checkStringLength} from './utils.js';
 
 const MAX_HASHTAG_LENGTH = 20;
 const MAX_HASHTAG_COUNT = 5;
-const MAX_COMMENT_LENGTH = 140;
 const HASHTAG_EXPRESSION = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
 
 const container = document.querySelector('.img-upload__overlay');
@@ -32,16 +30,6 @@ fileInput.addEventListener('change', () => {
 
 hashtagsInput.addEventListener('input', () => {
   checkHashtagsIn(hashtagsInput);
-});
-
-commentInput.addEventListener('input', () => {
-  const isCorrectLength = checkStringLength(commentInput.value, MAX_COMMENT_LENGTH);
-  let messageToShow = '';
-  if (!isCorrectLength) {
-    commentInput.value = commentInput.value.slice(0, -1);
-    messageToShow = `Максимальное количество символов - ${MAX_COMMENT_LENGTH}`;
-  }
-  commentInput.setCustomValidity(messageToShow);
 });
 
 export {MAX_HASHTAG_LENGTH, MAX_HASHTAG_COUNT, HASHTAG_EXPRESSION};

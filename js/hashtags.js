@@ -24,12 +24,7 @@ const createHashtagsFrom = (input, editingState) => {
   return hashtags;
 };
 
-const getTagsCountErrorString = (hashtags) => {
-  if (hashtags.length > MAX_HASHTAG_COUNT) {
-    return `Слишком много хештегов. Максимальное количество хештегов - ${MAX_HASHTAG_COUNT}`;
-  }
-  return '';
-};
+const getTagsCountErrorString = (hashtags) => hashtags.length > MAX_HASHTAG_COUNT ? `Слишком много хештегов. Максимальное количество хештегов - ${MAX_HASHTAG_COUNT}` : '';
 
 const getExpressionErrorString = (hashtags) => {
   let errorMessage = '';
@@ -37,7 +32,7 @@ const getExpressionErrorString = (hashtags) => {
     if (!HASHTAG_EXPRESSION.test(hashtag)) {
       switch (true) {
         case hashtag.length > MAX_HASHTAG_LENGTH:
-          errorMessage =  `Хештег "${hashtag}" слишком длинный. Хештег не может содержать больше ${MAX_HASHTAG_LENGTH} символов`;
+          errorMessage =  `Хештег '${hashtag}' слишком длинный. Хештег не может содержать больше ${MAX_HASHTAG_LENGTH} символов`;
           break;
         case hashtag[0] !== '#' && hashtag.length !== 0:
           errorMessage = 'Хештег должен начинаться с символа #';
@@ -50,7 +45,7 @@ const getExpressionErrorString = (hashtags) => {
             const char = hashtag[charIterator];
             const testChar = `#${char}`;
             if (!HASHTAG_EXPRESSION.test(testChar) && charIterator !== 0) {
-              errorMessage = `Хештег "${hashtag}" содержит недопустимый символ '${char}'`;
+              errorMessage = `Хештег '${hashtag}' содержит недопустимый символ '${char}'`;
               break;
             }
           }
@@ -62,10 +57,7 @@ const getExpressionErrorString = (hashtags) => {
 
 const getDuplicateErrorString = (hashtags) => {
   const hashtag = checkArrayForDuplicate(hashtags);
-  if (hashtag) {
-    return `Хештег ${hashtag} уже существует`;
-  }
-  return '';
+  return hashtag ?  `Хештег '${hashtag}' уже существует` :  '';
 };
 
 const resetHashtagsCharCounter = () => {
