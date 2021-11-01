@@ -49,7 +49,7 @@ const getExpressionErrorString = (hashtags) => {
           for (let charIterator = 0; charIterator < hashtag.length; charIterator++ ) {
             const char = hashtag[charIterator];
             const testChar = `#${char}`;
-            if (!HASHTAG_EXPRESSION.test(testChar) && char !== '#') {
+            if (!HASHTAG_EXPRESSION.test(testChar) && charIterator !== 0) {
               errorMessage = `Хештег "${hashtag}" содержит недопустимый символ '${char}'`;
               break;
             }
