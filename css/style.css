@@ -302,6 +302,10 @@ main {
   border: none;
 }
 
+.img-upload__form input:invalid {
+  outline: 1px solid #ff4e4e;
+}
+
 .img-upload__start {
   position: relative;
 

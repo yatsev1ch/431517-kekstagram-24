@@ -7,30 +7,6 @@ const getRandomNumberFrom = (minValue, maxValue) => {
 
 const checkStringLength = (string, maxLength) => string.length <= maxLength;
 
-const checkStringForExpression = (string, expression) => expression.test(string);
-
-const deleteCharIn = (string, index) => string.substr(0, index) + string.substr(index + 1);
-
-const getLastElementIn = (array) => {
-  const index = array.length - 1;
-  return array[index];
-};
-
-const clearStringFromExpression = (string, expression) => {
-  let testString = string.slice();
-  let iterator = 1;
-  while (testString.length >= 3) {
-    const threeFirstChars = testString.substring(0, 3);
-    if (expression.test(threeFirstChars)) {
-      testString = deleteCharIn(string, iterator);
-      return testString;
-    }
-    testString = testString.slice(1, testString.length);
-    iterator++;
-  }
-};
-
-
 const getRandomElementFrom = (array) => {
   const index = getRandomNumberFrom(0, array.length - 1);
   return array[index];
@@ -81,5 +57,5 @@ const createMessageFrom = (arrayOfStrings, numberOfStrings) => {
   return usedStrings.join(' ');
 };
 
-export {getRandomNumberFrom, checkStringLength, getRandomElementFrom, getUniqueId, createMessageFrom, isEscape, checkStringForExpression, checkArrayForDuplicate, checkForActiveElementsIn, clearStringFromExpression, getLastElementIn};
+export {getRandomNumberFrom, checkStringLength, getRandomElementFrom, getUniqueId, createMessageFrom, isEscape, checkArrayForDuplicate, checkForActiveElementsIn};
 
