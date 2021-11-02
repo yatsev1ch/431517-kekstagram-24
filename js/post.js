@@ -1,71 +1,53 @@
+import {setupAndShowModal} from './modal.js';
+
 const postContainer = document.querySelector('.big-picture');
-const image = postContainer.querySelector('img');
-const likes = postContainer.querySelector('.likes-count');
-const comments = postContainer.querySelector('.comments-count');
+const postImage = postContainer.querySelector('img');
+const postLikes = postContainer.querySelector('.likes-count');
+const postComments = postContainer.querySelector('.comments-count');
 const closeButton = postContainer.querySelector('.big-picture__cancel');
 const counter = postContainer.querySelector('.social__comment-count');
 const commentsLoader = postContainer.querySelector('.comments-loader');
 const commentsContainer = postContainer.querySelector('.social__comments');
-const description = postContainer.querySelector('.social__caption');
+const postDescription = postContainer.querySelector('.social__caption');
 
-const showModal = () => {
-  postContainer.classList.remove('hidden');
-  document.body.classList.add('modal-open');
-};
-
-const closeModal = () => {
-  postContainer.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-};
-
-const createCommentElementFrom = (comment) => {
+const createCommentElementFrom = ({avatar, name, message}) => {
   const commentElement = document.createElement('li');
   commentElement.classList.add('social__comment');
 
   const socialPicture = document.createElement('img');
   socialPicture.classList.add('social__picture');
-  socialPicture.src = comment.avatar;
-  socialPicture.alt = comment.name;
+  socialPicture.src = avatar;
+  socialPicture.alt = name;
   socialPicture.width = 35;
   socialPicture.height = 35;
   commentElement.append(socialPicture);
 
   const socialText = document.createElement('p');
   socialText.classList.add('social__text');
-  socialText.textContent = comment.message;
+  socialText.textContent = message;
   commentElement.append(socialText);
 
   return commentElement;
 };
 
-const showPost = (post) => {
+const showPost = ({description, url, likes, comments}) => {
   counter.classList.add('hidden');
   commentsLoader.classList.add('hidden');
 
-  description.textContent = post.description;
-  image.src = post.url;
-  likes.textContent = post.likes;
-  comments.textContent = post.comments.length;
+  postDescription.textContent = description;
+  postImage.src = url;
+  postLikes.textContent = likes;
+  postComments.textContent = comments.length;
 
   const fragment = document.createDocumentFragment();
-  post.comments.forEach((comment) => {
+  comments.forEach((comment) => {
     const commentElement = createCommentElementFrom(comment);
     fragment.append(commentElement);
   });
 
   commentsContainer.innerHTML = '';
   commentsContainer.append(fragment);
-  showModal();
-
-  closeButton.addEventListener('click', () => {
-    closeModal();
-  });
-
-  document.addEventListener('keydown', (evt) => {
-    if (evt.key === 'esc' || evt.key === 'Escape') {
-      closeModal();
-    }
-  });
+  setupAndShowModal(postContainer, closeButton);
 };
 
 export {showPost};

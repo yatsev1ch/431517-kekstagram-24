@@ -1,29 +1,35 @@
-import {showPost} from './fullscreen.js';
+import {showPost} from './post.js';
 
-const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
+const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
+const thumbnailsContainer = document.querySelector('.pictures');
+
+thumbnailsContainer.addEventListener('click', (evt) => {
+  const targetThumbnail = evt.target.closest('.picture');
+  if (targetThumbnail) {
+    evt.preventDefault();
+    showPost(targetThumbnail.post);
+  }
+});
+
 
 const createThumbnailFrom = (post) => {
-  const thumbnail = pictureTemplate.cloneNode(true);
-  const picture = thumbnail.querySelector('img');
-  const likes = thumbnail.querySelector('.picture__likes');
-  const comments = thumbnail.querySelector('.picture__comments');
+  const thumbnail = thumbnailTemplate.cloneNode(true);
+  const thumbnailPicture = thumbnail.querySelector('img');
+  const thumbnailLikes = thumbnail.querySelector('.picture__likes');
+  const thumbnailComments = thumbnail.querySelector('.picture__comments');
 
-  picture.src = post.url;
-  likes.textContent = post.likes;
-  comments.textContent = post.comments.length;
+  thumbnail['post'] = post;
+  thumbnailPicture.src = post.url;
+  thumbnailLikes.textContent = post.likes;
+  thumbnailComments.textContent = post.comments.length;
 
   return thumbnail;
 };
 
 const generateThumbnailsFrom = (posts) => {
   const fragment = document.createDocumentFragment();
-  const thumbnailsContainer = document.querySelector('.pictures');
   posts.forEach((post) => {
     const thumbnail = createThumbnailFrom(post);
-    thumbnail.addEventListener('click', (evt) =>{
-      evt.preventDefault();
-      showPost(post);
-    });
     fragment.append(thumbnail);
   });
   thumbnailsContainer.append(fragment);

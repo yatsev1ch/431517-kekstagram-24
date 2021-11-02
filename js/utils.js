@@ -12,6 +12,30 @@ const getRandomElementFrom = (array) => {
   return array[index];
 };
 
+const checkForActiveElementsIn = (elements) => {
+  for (const element of elements) {
+    if (document.activeElement === element) {
+      return true;
+    }
+  }
+  return false;
+};
+
+const checkArrayForDuplicate = (array) => {
+  for (let globalIterator = 0; globalIterator <= array.length - 2; globalIterator++) {
+    for (let innerIterator = globalIterator + 1; innerIterator <= array.length - 1; innerIterator++){
+      if (array[globalIterator] === array[innerIterator]){
+        const element = array[innerIterator];
+        return element;
+      }
+    }
+  }
+  return false;
+};
+
+const isEscape = (evt) => evt.key === 'esc' || evt.key === 'Escape';
+
+
 const getUniqueId = (minValue, maxValue, usedIds) => {
   let id = getRandomNumberFrom(minValue, maxValue);
   if (usedIds.length !== 0) {
@@ -33,4 +57,5 @@ const createMessageFrom = (arrayOfStrings, numberOfStrings) => {
   return usedStrings.join(' ');
 };
 
-export {getRandomNumberFrom, checkStringLength, getRandomElementFrom, getUniqueId, createMessageFrom};
+export {getRandomNumberFrom, checkStringLength, getRandomElementFrom, getUniqueId, createMessageFrom, isEscape, checkArrayForDuplicate, checkForActiveElementsIn};
+
