@@ -68,7 +68,7 @@ const getPosts = (numberOfPosts) => {
 
     const likes = getRandomNumberFrom(15, 200);
 
-    const numberOfComments = getRandomNumberFrom(1, 6);
+    const numberOfComments = getRandomNumberFrom(4, 15);
     const comments = getComments(numberOfComments);
 
     const post = {

@@ -19,6 +19,7 @@ const onClose = () => {
   previewImage.src = defaultImageSrc;
   commentInput.value = '';
   hashtagsInput.value = '';
+  hashtagsInput.setCustomValidity('');
   resetHashtagsCharCounter();
 };
 
