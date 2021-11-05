@@ -1,4 +1,4 @@
-import {image, imageEffectSlider} from './new-post.js';
+import {image, imageEffectSlider, imageEffectSliderContainer} from './new-post.js';
 
 let currentEffect;
 
@@ -75,7 +75,7 @@ const changeImageWith = (newEffect) => {
 const changeImageEffectTo = (effect) => {
   changeImageWith(effect);
   imageEffectSlider.noUiSlider.updateOptions(sliderOptionsFor[effect]);
-  currentEffect ? imageEffectSlider.classList.remove('hidden') : imageEffectSlider.classList.add('hidden');
+  currentEffect ? imageEffectSliderContainer.classList.remove('hidden') : imageEffectSliderContainer.classList.add('hidden');
 };
 
 const changeCurrentImageEffectWith = (value) => {

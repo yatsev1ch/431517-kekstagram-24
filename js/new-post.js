@@ -19,6 +19,7 @@ const imageScale = container.querySelector('.scale__control--value');
 const imageScaleValue = container.querySelector('.scale__control--hidden-value');
 const imageEffectsContainer = container.querySelector('.img-upload__effects');
 const imageEffectsRadioButtons = imageEffectsContainer.querySelectorAll('.effects__radio');
+const imageEffectSliderContainer = container.querySelector('.img-upload__effect-level');
 const imageEffectSlider = container.querySelector('.effect-level__slider');
 const imageEffectLevel = container.querySelector('.effect-level__value');
 
@@ -83,4 +84,4 @@ hashtagsInput.addEventListener('input', () => {
   checkHashtagsIn(hashtagsInput);
 });
 
-export {image, imageEffectSlider};
+export {image, imageEffectSlider, imageEffectSliderContainer};
