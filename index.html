@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="nouislider/nouislider.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <title>Кекстаграм</title>
 </head>
@@ -47,7 +48,7 @@
                   <fieldset class="img-upload__scale  scale">
                     <input type="text" class="scale__control  scale__control--hidden-value" value="100" name="scale-value" hidden>
                     <button type="button" class="scale__control  scale__control--smaller">Уменьшить</button>
-                    <input type="text" class="scale__control  scale__control--value" value="55%" title="Image Scale" name="scale" readonly>
+                    <input type="text" class="scale__control  scale__control--value" value="100%" title="Image Scale" name="scale" readonly>
                     <button type="button" class="scale__control  scale__control--bigger">Увеличить</button>
                   </fieldset>
 
@@ -59,7 +60,7 @@
                   <!-- Изменение глубины эффекта, накладываемого на изображение -->
                   <fieldset class="img-upload__effect-level  effect-level">
                     <input class="effect-level__value" type="number" step="any" name="effect-level" value="">
-                    <div class="effect-level__slider"></div>
+                    <div class="effect-level__slider hidden"></div>
                   </fieldset>
 
                   <!-- Кнопка для закрытия формы редактирования изображения -->
@@ -230,6 +231,8 @@
   <template id="messages">
     <div class="img-upload__message  img-upload__message--loading">Загружаем...</div>
   </template>
+  <script src="nouislider/nouislider.js"></script>
   <script src="js/main.js" type="module"></script>
+
 </body>
 </html>
