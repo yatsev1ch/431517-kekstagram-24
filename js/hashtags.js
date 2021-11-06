@@ -1,5 +1,8 @@
 import {checkArrayForDuplicate} from './utils.js';
-import {MAX_HASHTAG_COUNT, MAX_HASHTAG_LENGTH, HASHTAG_EXPRESSION} from './new-post.js';
+
+const MAX_HASHTAG_LENGTH = 20;
+const MAX_HASHTAG_COUNT = 5;
+const HASHTAG_EXPRESSION = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
 
 let hashtagsCharCounter = 0;
 

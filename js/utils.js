@@ -57,5 +57,11 @@ const createMessageFrom = (arrayOfStrings, numberOfStrings) => {
   return usedStrings.join(' ');
 };
 
-export {getRandomNumberFrom, checkStringLength, getRandomElementFrom, getUniqueId, createMessageFrom, isEscape, checkArrayForDuplicate, checkForActiveElementsIn};
+const resetRadioButtonsTo = (value, radioButtons) => {
+  radioButtons.forEach((button) => {
+    button.checked = button.value === value;
+  });
+};
+
+export {getRandomNumberFrom, checkStringLength, getRandomElementFrom, getUniqueId, createMessageFrom, isEscape, checkArrayForDuplicate, checkForActiveElementsIn, resetRadioButtonsTo};
 
