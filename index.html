@@ -207,22 +207,32 @@
     </a>
   </template>
 
+    <!-- Сообщение с ошибкой загрузки постов -->
+    <template id="load-error">
+      <section class="load-error notification-container">
+        <div class="load-error__inner">
+          <h2 class="load-error__title">Не удалось загрузить посты</h2>
+          <button type="button" class="load-error__button notification-button">Ок</button>
+        </div>
+      </section>
+    </template>
+
   <!-- Сообщение с ошибкой загрузки изображения -->
   <template id="error">
-    <section class="error">
+    <section class="error notification-container">
       <div class="error__inner">
         <h2 class="error__title">Ошибка загрузки файла</h2>
-        <button type="button" class="error__button">Загрузить другой файл</button>
+        <button type="button" class="error__button notification-button">Загрузить другой файл</button>
       </div>
     </section>
   </template>
 
   <!-- Сообщение об успешной загрузке изображения -->
   <template id="success">
-    <section class="success">
+    <section class="success notification-container">
       <div class="success__inner">
         <h2 class="success__title">Изображение успешно загружено</h2>
-        <button type="button" class="success__button">Круто!</button>
+        <button type="button" class="success__button notification-button">Круто!</button>
       </div>
     </section>
   </template>
