@@ -60,4 +60,4 @@ const setupAndShowModal = (modalElement, button, closeCompletionHandler, ...inpu
   }
 };
 
-export {setupAndShowModal};
+export {setupAndShowModal, closeAndResetModal};

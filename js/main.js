@@ -1,6 +1,6 @@
-import {getPosts} from './data.js';
+import {fetchPosts} from './network.js';
 import {generateThumbnailsFrom} from './thumbnails.js';
+import {showNotification} from './notifications.js';
 import './new-post.js';
 
-const posts = getPosts(25);
-generateThumbnailsFrom(posts);
+fetchPosts(generateThumbnailsFrom, showNotification);

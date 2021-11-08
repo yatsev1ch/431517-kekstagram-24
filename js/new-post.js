@@ -1,5 +1,7 @@
 import {resetRadioButtonsTo} from './utils.js';
-import {setupAndShowModal} from './modal.js';
+import {setupAndShowModal, closeAndResetModal} from './modal.js';
+import {sendNewPost} from './network.js';
+import {showNotification} from './notifications.js';
 import {checkHashtagsIn, resetHashtagsCharCounter} from './hashtags.js';
 import {changeImageEffectTo, changeCurrentImageEffectWith, sliderOptionsFor, currentEffect} from './image-effects.js';
 
@@ -9,6 +11,7 @@ const MAX_IMAGE_SCALE = 100;
 
 const container = document.querySelector('.img-upload__overlay');
 const fileInput = document.querySelector('#upload-file');
+const form = document.querySelector('.img-upload__form');
 const closeButton = container.querySelector('.img-upload__cancel');
 
 const image = container.querySelector('.img-upload__preview img');
@@ -73,6 +76,13 @@ const onClose = () => {
   hashtagsInput.setCustomValidity('');
   resetHashtagsCharCounter();
 };
+
+form.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  const formData = new FormData(evt.target);
+  closeAndResetModal();
+  sendNewPost(formData, showNotification, showNotification);
+});
 
 fileInput.addEventListener('change', () => {
   setupAndShowModal(container, closeButton, onClose, hashtagsInput, commentInput);
