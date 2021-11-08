@@ -1,4 +1,4 @@
-const loadNewPost = (formData, successHandler, errorHandler) => {
+const sendNewPost = (formData, successHandler, errorHandler) => {
   fetch(
     'https://24.javascript.pages.academy/kekstagram',
     {
@@ -30,4 +30,4 @@ const fetchPosts = (successHandler, errorHandler) => {
   });
 };
 
-export {fetchPosts, loadNewPost};
+export {fetchPosts, sendNewPost};

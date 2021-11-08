@@ -1,6 +1,6 @@
 import {resetRadioButtonsTo} from './utils.js';
 import {setupAndShowModal, closeAndResetModal} from './modal.js';
-import {loadNewPost} from './network.js';
+import {sendNewPost} from './network.js';
 import {showNotification} from './notifications.js';
 import {checkHashtagsIn, resetHashtagsCharCounter} from './hashtags.js';
 import {changeImageEffectTo, changeCurrentImageEffectWith, sliderOptionsFor, currentEffect} from './image-effects.js';
@@ -81,7 +81,7 @@ form.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const formData = new FormData(evt.target);
   closeAndResetModal();
-  loadNewPost(formData, showNotification, showNotification);
+  sendNewPost(formData, showNotification, showNotification);
 });
 
 fileInput.addEventListener('change', () => {
