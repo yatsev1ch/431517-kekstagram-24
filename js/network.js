@@ -1,33 +1,22 @@
-const sendNewPost = (formData, successHandler, errorHandler) => {
-  fetch(
-    'https://24.javascript.pages.academy/kekstagram',
-    {
-      method: 'POST',
-      body: formData,
-    },
-  ).then((response) => {
-    if (response.ok) {
-      successHandler('success');
-      return;
-    }
-    throw new Error();
-  }).catch(() => {
-    errorHandler('error');
-  });
-};
-
-
-const fetchPosts = (successHandler, errorHandler) => {
-  fetch('https://24.javascript.pages.academy/kekstagram/data').then((response) => {
+const performHTTPRequest = (url, successCb, errorCb, requestMethod = 'GET', requestSettings) => {
+  let settings = {method: requestMethod};
+  if (requestSettings) {
+    settings = {...settings, ...requestSettings};
+  }
+  fetch(url, settings).then((response) => {
     if (response.ok) {
       return response.json();
     }
     throw new Error();
-  }).then((posts) => {
-    successHandler(posts);
+  }).then((data) => {
+    if (requestMethod === 'GET') {
+      successCb(data);
+      return;
+    }
+    successCb();
   }).catch(() => {
-    errorHandler('load-error');
+    errorCb();
   });
 };
 
-export {fetchPosts, sendNewPost};
+export {performHTTPRequest};

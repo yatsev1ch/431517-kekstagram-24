@@ -1,3 +1,10 @@
+const getRandomNumberFrom = (minValue, maxValue) => {
+  if (minValue < 0 || (maxValue <= minValue)) {
+    return 'Введите корректные значения диапозона';
+  }
+  return Math.floor(Math.random() * (maxValue - minValue + 1) + minValue);
+};
+
 const checkForActiveElementsIn = (elements) => {
   for (const element of elements) {
     if (document.activeElement === element) {
@@ -27,5 +34,28 @@ const resetRadioButtonsTo = (value, radioButtons) => {
   });
 };
 
-export {isEscape, checkArrayForDuplicate, checkForActiveElementsIn, resetRadioButtonsTo};
+const getRandomElementsFrom = (array, numberOfElements) => {
+  const randomElements = [];
+  let index = getRandomNumberFrom(0, array.length - 1);
+  randomElements.push(array[index]);
+  while (randomElements.length < numberOfElements) {
+    if (randomElements.includes(array[index])) {
+      index = getRandomNumberFrom(0, array.length - 1);
+      continue;
+    }
+    randomElements.push(array[index]);
+  }
+  return randomElements;
+};
 
+const createDebouncer = (callback, timeoutDelay) => {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+
+export {isEscape, checkArrayForDuplicate, checkForActiveElementsIn, resetRadioButtonsTo, getRandomElementsFrom, createDebouncer};
