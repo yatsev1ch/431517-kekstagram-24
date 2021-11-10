@@ -1,6 +1,6 @@
 import {resetRadioButtonsTo} from './utils.js';
 import {setupAndShowModal, closeAndResetModal} from './modal.js';
-import {sendNewPost} from './network.js';
+import {performHTTPRequest} from './network.js';
 import {showNotification} from './notifications.js';
 import {checkHashtagsIn, resetHashtagsCharCounter} from './hashtags.js';
 import {changeImageEffectTo, changeCurrentImageEffectWith, sliderOptionsFor, currentEffect} from './image-effects.js';
@@ -8,6 +8,8 @@ import {changeImageEffectTo, changeCurrentImageEffectWith, sliderOptionsFor, cur
 const IMAGE_SCALE_STEP = 25;
 const MIN_IMAGE_SCALE = 25;
 const MAX_IMAGE_SCALE = 100;
+
+const SERVER_URL = 'https://24.javascript.pages.academy/kekstagram';
 
 const container = document.querySelector('.img-upload__overlay');
 const fileInput = document.querySelector('#upload-file');
@@ -81,7 +83,11 @@ form.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const formData = new FormData(evt.target);
   closeAndResetModal();
-  sendNewPost(formData, showNotification, showNotification);
+  performHTTPRequest(SERVER_URL, () => {
+    showNotification('success');
+  }, () => {
+    showNotification('error');
+  }, 'POST', {body: formData});
 });
 
 fileInput.addEventListener('change', () => {
