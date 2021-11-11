@@ -6,12 +6,12 @@ const loadErrorTemplate = document.querySelector('#load-error').content.querySel
 
 let notificationContainer;
 
-const onEscPress = (evt) => {
+const onNotificationEscape = (evt) => {
   if (isEscape(evt)) {
     evt.preventDefault();
     notificationContainer.remove();
     notificationContainer = undefined;
-    document.removeEventListener('keydown', onEscPress);
+    document.removeEventListener('keydown', onNotificationEscape);
   }
 };
 
@@ -34,11 +34,11 @@ const showNotification = (typeName) => {
     if (evt.target === notificationContainer || evt.target === closeButton) {
       notificationContainer.remove();
       notificationContainer = undefined;
-      document.removeEventListener('keydown', onEscPress);
+      document.removeEventListener('keydown', onNotificationEscape);
     }
   });
 
-  document.addEventListener('keydown', onEscPress);
+  document.addEventListener('keydown', onNotificationEscape);
 
   document.body.append(notificationContainer);
 };
