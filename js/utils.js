@@ -26,7 +26,7 @@ const checkArrayForDuplicate = (array) => {
   return false;
 };
 
-const isEscape = (evt) => evt.key === 'esc' || evt.key === 'Escape';
+const checkIfEscape = (evt) => evt.key === 'esc' || evt.key === 'Escape';
 
 const resetRadioButtonsTo = (value, radioButtons) => {
   radioButtons.forEach((button) => {
@@ -58,4 +58,4 @@ const createDebouncer = (callback, timeoutDelay) => {
 };
 
 
-export {isEscape, checkArrayForDuplicate, checkForActiveElementsIn, resetRadioButtonsTo, getRandomElementsFrom, createDebouncer};
+export {checkIfEscape, checkArrayForDuplicate, checkForActiveElementsIn, resetRadioButtonsTo, getRandomElementsFrom, createDebouncer};

@@ -1,4 +1,4 @@
-import {isEscape} from './utils.js';
+import {checkIfEscape} from './utils.js';
 
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
 const errorTemplate = document.querySelector('#error').content.querySelector('.error');
@@ -7,7 +7,7 @@ const loadErrorTemplate = document.querySelector('#load-error').content.querySel
 let notificationContainer;
 
 const onNotificationEscape = (evt) => {
-  if (isEscape(evt)) {
+  if (checkIfEscape(evt)) {
     evt.preventDefault();
     notificationContainer.remove();
     notificationContainer = undefined;

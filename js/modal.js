@@ -1,4 +1,4 @@
-import {isEscape, checkForActiveElementsIn} from './utils.js';
+import {checkIfEscape, checkForActiveElementsIn} from './utils.js';
 
 let modal;
 let closeButton;
@@ -39,7 +39,7 @@ const showModal = (inputsWithFocus) => {
   closeButton.addEventListener('click', onModalClose);
 
   onModalEscape = (evt) => {
-    if (isEscape(evt)) {
+    if (checkIfEscape(evt)) {
       evt.preventDefault();
       if (checkForActiveElementsIn(inputsWithFocus)) {
         return;
