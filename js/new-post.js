@@ -3,7 +3,7 @@ import {setupAndShowModal, closeAndResetModal} from './modal.js';
 import {performHTTPRequest} from './network.js';
 import {showNotification} from './notifications.js';
 import {checkHashtagsIn, resetHashtagsCharCounter} from './hashtags.js';
-import {changeImageEffectTo, changeCurrentImageEffectWith, sliderOptionsFor, currentEffect} from './image-effects.js';
+import {changeImageEffectTo, changeCurrentImageEffectWith, sliderOptions, getCurrentEffect} from './image-effects.js';
 
 const IMAGE_SCALE_STEP = 25;
 const MIN_IMAGE_SCALE = 25;
@@ -33,16 +33,16 @@ const commentInput = container.querySelector('.text__description');
 
 const defaultImageSrc = image.src;
 
-noUiSlider.create(imageEffectSlider, sliderOptionsFor.none);
+noUiSlider.create(imageEffectSlider, sliderOptions.none);
 
 imageEffectsContainer.addEventListener('change', (evt) => {
   const effect = evt.target.closest('.effects__radio').value;
-  changeImageEffectTo(effect);
+  changeImageEffectTo(effect, image, imageEffectSlider, imageEffectSliderContainer);
 });
 
 imageEffectSlider.noUiSlider.on('update', (values, handle) => {
-  changeCurrentImageEffectWith(values[handle]);
-  imageEffectLevel.value = currentEffect ? values[handle] : '';
+  changeCurrentImageEffectWith(values[handle], image);
+  imageEffectLevel.value = getCurrentEffect() ? values[handle] : '';
 });
 
 const changeImageScaleTo = (value) => {
@@ -70,7 +70,7 @@ const onClose = () => {
 
   image.src = defaultImageSrc;
   changeImageScaleTo(MAX_IMAGE_SCALE);
-  changeImageEffectTo('none');
+  changeImageEffectTo('none', image, imageEffectSlider, imageEffectSliderContainer);
   resetRadioButtonsTo('none', imageEffectsRadioButtons);
 
   commentInput.value = '';

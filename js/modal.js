@@ -54,10 +54,7 @@ const setupAndShowModal = (modalElement, button, closeCompletionHandler, ...inpu
   modal = modalElement;
   closeButton = button;
   showModal(inputsWithFocus);
-
-  if (closeCompletionHandler) {
-    onCloseCompletion = closeCompletionHandler;
-  }
+  onCloseCompletion = closeCompletionHandler ? closeCompletionHandler : undefined;
 };
 
 export {setupAndShowModal, closeAndResetModal};

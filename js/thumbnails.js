@@ -12,7 +12,7 @@ const thumbnailsFilters = document.querySelector('.img-filters');
 const thumbnailsFiltersButtons = thumbnailsFilters.querySelectorAll('.img-filters__button');
 
 let posts;
-let debounceFilterChange;
+let debounceChangingOfFilter;
 
 thumbnailsContainer.addEventListener('click', (evt) => {
   const targetThumbnail = evt.target.closest('.picture');
@@ -94,7 +94,7 @@ const changeThumbnailsFilterWith = (filterButtonId) => {
 thumbnailsFilters.addEventListener('click', (evt) => {
   if (evt.target.classList.contains('img-filters__button')) {
     const buttonId = evt.target.id;
-    debounceFilterChange(buttonId);
+    debounceChangingOfFilter(buttonId);
     setFiltersButtonToActive(buttonId);
   }
 });
@@ -103,7 +103,7 @@ const getPosts = () => {
   performHTTPRequest(POSTS_URL, (fetchedPosts) => {
     posts = fetchedPosts;
     renderThumbnailsFrom(posts);
-    debounceFilterChange = createDebouncer((filterButtonId) => {
+    debounceChangingOfFilter = createDebouncer((filterButtonId) => {
       changeThumbnailsFilterWith(filterButtonId);
     }, DEBOUNCE_DELAY);
     thumbnailsFilters.classList.remove('img-filters--inactive');

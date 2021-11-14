@@ -1,8 +1,6 @@
-import {image, imageEffectSlider, imageEffectSliderContainer} from './new-post.js';
-
 let currentEffect;
 
-const sliderOptionsFor = {
+const sliderOptions = {
   none: {
     range: {min: 0, max: 1},
     start: 1,
@@ -59,7 +57,9 @@ const sliderOptionsFor = {
   },
 };
 
-const changeImageWith = (newEffect) => {
+const getCurrentEffect = () => currentEffect;
+
+const changeImageWith = (newEffect, image) => {
   if (currentEffect) {
     image.classList.remove(`effects__preview--${currentEffect}`);
   }
@@ -72,13 +72,13 @@ const changeImageWith = (newEffect) => {
   currentEffect = undefined;
 };
 
-const changeImageEffectTo = (effect) => {
-  changeImageWith(effect);
-  imageEffectSlider.noUiSlider.updateOptions(sliderOptionsFor[effect]);
-  currentEffect ? imageEffectSliderContainer.classList.remove('hidden') : imageEffectSliderContainer.classList.add('hidden');
+const changeImageEffectTo = (effect, image, slider, sliderContainer) => {
+  changeImageWith(effect, image);
+  slider.noUiSlider.updateOptions(sliderOptions[effect]);
+  currentEffect ? sliderContainer.classList.remove('hidden') : sliderContainer.classList.add('hidden');
 };
 
-const changeCurrentImageEffectWith = (value) => {
+const changeCurrentImageEffectWith = (value, image) => {
   switch (currentEffect) {
     case 'chrome':
       image.style.webkitFilter = `grayscale(${value})`;
@@ -100,4 +100,4 @@ const changeCurrentImageEffectWith = (value) => {
   }
 };
 
-export {changeImageEffectTo, changeCurrentImageEffectWith, sliderOptionsFor, currentEffect};
+export {changeImageEffectTo, changeCurrentImageEffectWith, sliderOptions, getCurrentEffect};

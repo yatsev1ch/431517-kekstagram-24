@@ -1,19 +1,13 @@
 const performHTTPRequest = (url, successCb, errorCb, requestMethod = 'GET', requestSettings) => {
-  let settings = {method: requestMethod};
-  if (requestSettings) {
-    settings = {...settings, ...requestSettings};
-  }
+  const settings = {method: requestMethod, ...requestSettings};
+
   fetch(url, settings).then((response) => {
     if (response.ok) {
       return response.json();
     }
     throw new Error();
   }).then((data) => {
-    if (requestMethod === 'GET') {
-      successCb(data);
-      return;
-    }
-    successCb();
+    successCb(data);
   }).catch(() => {
     errorCb();
   });
