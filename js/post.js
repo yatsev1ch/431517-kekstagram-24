@@ -37,6 +37,7 @@ const createCommentElementFrom = ({avatar, name, message}) => {
 const loadNewComments = (comments) => {
   const numberOfComments = comments.length;
   let numberOfExistingComments = commentsContainer.childElementCount;
+
   const numberOfNewComments = Math.min(numberOfComments - numberOfExistingComments, MAX_NEW_COMMENTS_COUNT);
 
   const fragment = document.createDocumentFragment();
@@ -48,6 +49,7 @@ const loadNewComments = (comments) => {
   commentsContainer.append(fragment);
 
   numberOfExistingComments = commentsContainer.childElementCount;
+
   loadedCommentsCount.textContent = numberOfExistingComments;
   if (numberOfExistingComments === numberOfComments) {
     commentsLoadButton.classList.toggle('hidden');
@@ -60,7 +62,7 @@ const onLoadCommentsClick = () => {
 
 const onPostClose = () => {
   commentsLoadButton.removeEventListener('click', onLoadCommentsClick);
-  commentsLoadButton.classList.toggle('hidden');
+  commentsLoadButton.classList.remove('hidden');
   postComments = undefined;
 };
 
