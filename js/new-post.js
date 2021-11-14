@@ -99,5 +99,3 @@ fileInput.addEventListener('change', () => {
 hashtagsInput.addEventListener('input', () => {
   checkHashtagsIn(hashtagsInput);
 });
-
-export {image, imageEffectSlider, imageEffectSliderContainer};
