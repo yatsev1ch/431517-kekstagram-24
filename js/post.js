@@ -52,7 +52,7 @@ const loadNewComments = (comments) => {
 
   loadedCommentsCount.textContent = numberOfExistingComments;
   if (numberOfExistingComments === numberOfComments) {
-    commentsLoadButton.classList.toggle('hidden');
+    commentsLoadButton.classList.add('hidden');
   }
 };
 
